@@ -17,6 +17,10 @@
 
 # Based on https://github.com/gunnarmorling/1brc/blob/main/src/main/java/dev/morling/onebrc/CreateMeasurements.java
 
+# This is a copy of:
+# https://github.com/gunnarmorling/1brc/blob/main/src/main/python/create_measurements.py
+# With a minor edit to make the paths work.
+
 import os
 import sys
 import random
