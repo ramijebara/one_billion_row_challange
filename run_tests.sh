@@ -18,7 +18,7 @@ for file in "$directory"/*.txt; do
     echo "pass"
   else
     echo "fail"
-    cargo run -q -- $file
-    cat $valid_output
+    echo "TEST    `cargo run -q -- $file`"
+    echo "CORRECT `cat $valid_output`"
   fi
 done
