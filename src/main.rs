@@ -3,7 +3,10 @@
 use color_eyre::eyre::Result;
 use log::info;
 use std::{
-    collections::HashMap, env, fs::File, io::{BufRead, BufReader}
+    collections::HashMap,
+    env,
+    fs::File,
+    io::{BufRead, BufReader},
 };
 
 fn main() -> Result<()> {
@@ -40,12 +43,22 @@ fn main() -> Result<()> {
     info!("Number of cities in hashtable: {}", cities.len());
 
     let mut sorted_cities: Vec<(String, WeatherSummary)> = cities.into_iter().collect();
-    sorted_cities.sort_by(|a, b| {a.0.cmp(&b.0)});
-    
-    sorted_cities.into_iter().for_each(|(city, stats)| {
-        let mean = stats.sum/stats.reading_count;
-        println!("{}={:.1}/{:.1}/{:.1}", city, stats.min, mean, stats.max);
-    });
+    sorted_cities.sort_by(|a, b| a.0.cmp(&b.0));
+
+    let sorted_cities_length = sorted_cities.len() - 1;
+
+    print!("{{");
+    sorted_cities
+        .into_iter()
+        .enumerate()
+        .for_each(|(e, (city, stats))| {
+            let mean = stats.sum / stats.reading_count;
+            print!("{}={:.1}/{:.1}/{:.1}", city, stats.min, ( mean * 10.0 ).round() / 10.0, stats.max);
+            if e < sorted_cities_length {
+                print!(", ");
+            }
+        });
+    print!("}}\n");
 
     Ok(())
 }
