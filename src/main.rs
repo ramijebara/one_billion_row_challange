@@ -3,14 +3,16 @@
 use color_eyre::eyre::Result;
 use log::info;
 use std::{
-    collections::HashMap,
-    fs::File,
-    io::{BufRead, BufReader},
+    collections::HashMap, env, fs::File, io::{BufRead, BufReader}
 };
 
 fn main() -> Result<()> {
     env_logger::init();
-    let file = File::open("data/measurements.txt")?;
+    let args: Vec<String> = env::args().collect();
+    let filename = &args[1].to_owned();
+    info!("opening filename: {}", filename);
+
+    let file = File::open(filename)?;
     let mut data_lines = BufReader::new(file).lines();
     let mut cities: HashMap<String, WeatherSummary> = HashMap::new();
 
@@ -42,7 +44,7 @@ fn main() -> Result<()> {
     
     sorted_cities.into_iter().for_each(|(city, stats)| {
         let mean = stats.sum/stats.reading_count;
-        println!("{}={}/{}/{}", city, stats.min, mean, stats.max);
+        println!("{}={:.1}/{:.1}/{:.1}", city, stats.min, mean, stats.max);
     });
 
     Ok(())
