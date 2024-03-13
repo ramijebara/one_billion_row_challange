@@ -52,13 +52,13 @@ fn main() -> Result<()> {
         .into_iter()
         .enumerate()
         .for_each(|(e, (city, stats))| {
-            let mean = ((stats.sum  / stats.reading_count) * 10.0).ceil() / 10.0 ;
+            let mean = ((stats.sum / stats.reading_count) * 10.0).ceil() / 10.0;
             print!("{}={:.1}/{:.1}/{:.1}", city, stats.min, mean, stats.max);
             if e < sorted_cities_length {
                 print!(", ");
             }
         });
-    print!("}}\n");
+    println!("}}");
 
     Ok(())
 }
