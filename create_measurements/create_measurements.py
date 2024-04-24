@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 #  Copyright 2023 The original authors
 #
@@ -35,7 +35,8 @@ def check_args(file_args):
         if len(file_args) != 2 or int(file_args[1]) <= 0:
             raise Exception()
     except:
-        print("Usage:  create_measurements.sh <positive integer number of records to create>")
+        print(
+            "Usage:  create_measurements.sh <positive integer number of records to create>")
         print("        You can use underscore notation for large number of records.")
         print("        For example:  1_000_000_000 for one billion")
         exit()
@@ -88,7 +89,8 @@ def estimate_file_size(weather_station_names, num_rows_to_create):
     """
     Tries to estimate how large a file the test data will be
     """
-    total_name_bytes = sum(len(s.encode("utf-8")) for s in weather_station_names)
+    total_name_bytes = sum(len(s.encode("utf-8"))
+                           for s in weather_station_names)
     avg_name_bytes = total_name_bytes / float(len(weather_station_names))
 
     # avg_temp_bytes = sum(len(str(n / 10.0)) for n in range(-999, 1000)) / 1999
@@ -110,7 +112,8 @@ def build_test_data(weather_station_names, num_rows_to_create):
     coldest_temp = -99.9
     hottest_temp = 99.9
     station_names_10k_max = random.choices(weather_station_names, k=10_000)
-    batch_size = 10000 # instead of writing line by line to file, process a batch of stations and put it to disk
+    # instead of writing line by line to file, process a batch of stations and put it to disk
+    batch_size = 10000
     chunks = num_rows_to_create // batch_size
     print('Building test data...')
 
@@ -118,11 +121,13 @@ def build_test_data(weather_station_names, num_rows_to_create):
         with open("../data/measurements.txt", 'w') as file:
             progress = 0
             for chunk in range(chunks):
-                
+
                 batch = random.choices(station_names_10k_max, k=batch_size)
-                prepped_deviated_batch = '\n'.join([f"{station};{random.uniform(coldest_temp, hottest_temp):.1f}" for station in batch]) # :.1f should quicker than round on a large scale, because round utilizes mathematical operation
+                # :.1f should quicker than round on a large scale, because round utilizes mathematical operation
+                prepped_deviated_batch = '\n'.join(
+                    [f"{station};{random.uniform(coldest_temp, hottest_temp):.1f}" for station in batch])
                 file.write(prepped_deviated_batch + '\n')
-                
+
                 # Update progress bar every 1%
                 if (chunk + 1) * 100 // chunks != progress:
                     progress = (chunk + 1) * 100 // chunks
@@ -134,12 +139,12 @@ def build_test_data(weather_station_names, num_rows_to_create):
         print("Something went wrong. Printing error info and exiting...")
         print(e)
         exit()
-    
+
     end_time = time.time()
     elapsed_time = end_time - start_time
     file_size = os.path.getsize("../data/measurements.txt")
     human_file_size = convert_bytes(file_size)
- 
+
     print("Test data successfully written to 1brc/data/measurements.txt")
     print(f"Actual file size:  {human_file_size}")
     print(f"Elapsed time: {format_elapsed_time(elapsed_time)}")

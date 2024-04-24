@@ -9,6 +9,11 @@ This is a basic implementation of the one billion row challenge in Rust.
 - Uses around 15GB of RAM
 - Runs in under 30 seconds on an 8 core AMD Ryzen 7 PRO 7840U laptop
 
+## Using the apache arrow datafusion library
+- Uses around 80MB of RAM
+- Runs in under 7 seconds on an  8 core AMD Ryzen 7 PRO 7840U laptop
+- Special thanks for [JosiahParry](https://github.com/JosiahParry) for the YouTube tutorial and idea
+
 Release binaries were used for testing.
 
 # References
